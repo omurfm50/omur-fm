@@ -225,6 +225,47 @@
       font: 11px Tahoma, Arial, sans-serif;
     }
 
+    .caster-radio-controls {
+      width: min(714px, 100%);
+      height: 48px;
+      padding: 0;
+      border-radius: 24px;
+      background: #686868;
+    }
+
+    .caster-radio-controls .cstrEmbed,
+    .caster-radio-controls .cstrEmbed iframe {
+      position: absolute !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      max-width: none !important;
+      height: 170px !important;
+      border: 0 !important;
+    }
+
+    .caster-radio-controls .cstrEmbed > a {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    .caster-radio-controls .radio-name {
+      position: absolute;
+      z-index: 3;
+      top: 12px;
+      right: 270px;
+      left: 158px;
+      height: 24px;
+      border-radius: 12px;
+      background: linear-gradient(#030303, #111);
+      pointer-events: none;
+    }
+
     .radio-controls::before {
       position: absolute;
       top: 3px;
@@ -235,6 +276,10 @@
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .32), transparent);
       content: "";
       pointer-events: none;
+    }
+
+    .caster-radio-controls::before {
+      z-index: 2;
     }
 
     .radio-control-button {
@@ -565,6 +610,7 @@
       .mouse-clock {
         display: none !important;
       }
+
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -625,23 +671,31 @@
         </div>
       </section>
 
-      <div class="radio-controls" role="group" aria-label="Radyo kontrolleri">
-        <button class="radio-control-button" id="radio-play" type="button" aria-label="Radyoyu oynat" title="Oynat">
-          <span class="control-label">PLAY</span>
-          <span class="play-icon" aria-hidden="true"></span>
-        </button>
-        <button class="radio-control-button" id="radio-stop" type="button" aria-label="Radyoyu durdur" title="Durdur">
-          <span class="control-label">STOP</span>
-          <span class="stop-icon" aria-hidden="true"></span>
-        </button>
-        <span class="status-light is-stopped" id="radio-status-light" aria-hidden="true"></span>
+      <div class="radio-controls caster-radio-controls" role="group" aria-label="Caster.fm radyo kontrolleri">
+        <div
+          class="cstrEmbed"
+          data-type="newStreamPlayer"
+          data-publicToken="79ea291b-69b6-42ba-a9e7-378a6c72cc54"
+          data-theme="dark"
+          data-color="e81e4d"
+          data-channelId=""
+          data-autoplay="false"
+        >
+          <a href="https://www.caster.fm">Shoutcast Hosting</a>
+          <a href="https://www.caster.fm">Stream Hosting</a>
+          <a href="https://www.caster.fm">Radio Server Hosting</a>
+        </div>
         <span class="radio-name" id="radio-now-playing" role="status" aria-live="polite" aria-label="Şu an çalan">
           <span class="radio-name-track" id="radio-now-playing-text">&#9835; &Ouml;M&Uuml;R FM &#9835;</span>
         </span>
-        <div class="volume-control">
-          <button class="volume-icon" id="radio-mute" type="button" aria-label="Sesi kapat" title="Sesi kapat">&#128266;</button>
-          <input class="volume-slider" id="radio-volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Ses seviyesi">
-        </div>
+      </div>
+
+      <div hidden aria-hidden="true">
+        <button id="radio-play" type="button"></button>
+        <button id="radio-stop" type="button"></button>
+        <span id="radio-status-light" class="is-stopped"></span>
+        <button id="radio-mute" type="button"></button>
+        <input id="radio-volume" type="range" min="0" max="1" step="0.01" value="0.8">
         <span class="radio-message" id="radio-message" role="status" aria-live="polite"></span>
         <audio id="radio-audio" preload="none" autoplay></audio>
       </div>
@@ -663,6 +717,7 @@
     <small id="clock-date"></small>
   </div>
 
+  <script src="https://cdn.cloud.caster.fm/widgets/embed.js"></script>
   <script>
     (() => {
       const clock = document.querySelector("#mouse-clock");
@@ -717,6 +772,10 @@
 
         if (typeof data !== "object") return;
         const metadata = data.metadata || data.nowPlaying || data.now_playing || data.track || data.song || data;
+        if (typeof metadata === "string") {
+          readNowPlayingPayload(metadata);
+          return;
+        }
         const artist = metadata.artist || metadata.artistName || metadata.artist_name;
         const title = metadata.title || metadata.songTitle || metadata.song_title || metadata.trackTitle || metadata.track_title;
         setNowPlaying(artist, title);
@@ -738,6 +797,17 @@
       // Player doğrudan sayfaya gömülürse bu olay veya yardımcı fonksiyon kullanılabilir.
       window.addEventListener("casterfm:metadata", (event) => readNowPlayingPayload(event.detail));
       window.omurFmNowPlaying = setNowPlaying;
+
+      const refreshNowPlaying = async () => {
+        try {
+          const response = await fetch(`/api/radio-status?t=${Date.now()}`, { cache: "no-store" });
+          if (!response.ok) return;
+          readNowPlayingPayload(await response.json());
+        } catch {}
+      };
+
+      refreshNowPlaying();
+      window.setInterval(refreshNowPlaying, 15000);
 
       const syncMobileLayout = () => {
         if (!mobileLayout.matches) {
