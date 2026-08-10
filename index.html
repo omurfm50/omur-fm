@@ -267,6 +267,131 @@
       white-space: nowrap;
     }
 
+    .live-caster-logo {
+      position: absolute;
+      z-index: 4;
+      top: 17px;
+      left: 30px;
+      width: 69px;
+      height: auto;
+    }
+
+    .live-volume {
+      position: absolute;
+      z-index: 4;
+      top: 13px;
+      left: 362px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 20px;
+      color: #f2f2f2;
+    }
+
+    .live-volume-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 18px;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #f2f2f2;
+    }
+
+    button.live-volume-icon { cursor: pointer; }
+
+    .live-volume-icon svg {
+      display: block;
+      width: 18px;
+      height: 18px;
+    }
+
+    .live-volume-slider {
+      width: 132px;
+      height: 19px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .live-volume-slider::-webkit-slider-runnable-track {
+      height: 5px;
+      border: 0;
+      background: #e81e4d;
+    }
+
+    .live-volume-slider::-webkit-slider-thumb {
+      width: 19px;
+      height: 19px;
+      margin-top: -7px;
+      border: 0;
+      border-radius: 50%;
+      background: #f2f2f2;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .live-volume-slider::-moz-range-track {
+      height: 5px;
+      border: 0;
+      background: #e81e4d;
+    }
+
+    .live-volume-slider::-moz-range-thumb {
+      width: 19px;
+      height: 19px;
+      border: 0;
+      border-radius: 50%;
+      background: #f2f2f2;
+    }
+
+    .live-play {
+      position: absolute;
+      z-index: 5;
+      top: 10px;
+      right: 25px;
+      display: flex;
+      width: 120px;
+      height: 21px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 3px;
+      background: transparent;
+      color: #fff;
+      font: bold 14px Tahoma, Arial, sans-serif;
+      cursor: pointer;
+    }
+
+    .live-play-icon,
+    .live-play-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 21px;
+    }
+
+    .live-play-icon {
+      width: 38px;
+      background: linear-gradient(90deg, #df4267, #c72e53);
+      font-size: 17px;
+    }
+
+    .live-play-label {
+      width: 82px;
+      background: #dc4166;
+    }
+
     .caster-radio-controls .radio-name {
       position: absolute;
       z-index: 3;
@@ -713,22 +838,28 @@
       </section>
 
       <div class="radio-controls caster-radio-controls" role="group" aria-label="Caster.fm radyo kontrolleri">
-        <div
-          class="cstrEmbed"
-          data-type="newStreamPlayer"
-          data-publicToken="79ea291b-69b6-42ba-a9e7-378a6c72cc54"
-          data-theme="dark"
-          data-color="e81e4d"
-          data-channelId=""
-          data-autoplay="false"
-        >
-          <a href="https://www.caster.fm">Shoutcast Hosting</a>
-          <a href="https://www.caster.fm">Stream Hosting</a>
-          <a href="https://www.caster.fm">Radio Server Hosting</a>
-        </div>
+        <img class="live-caster-logo" src="https://cdn.cloud.caster.fm/images/white-logo.svg" alt="Caster.fm">
         <span class="radio-name" id="radio-now-playing" role="status" aria-live="polite" aria-label="Şu an çalan">
           <span class="radio-name-track" id="radio-now-playing-text">&#9835; &Ouml;M&Uuml;R FM &#9835;</span>
         </span>
+        <div class="live-volume">
+          <button class="live-volume-icon" id="live-radio-mute" type="button" aria-label="Sesi kapat" title="Sesi kapat">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4z"></path>
+            </svg>
+          </button>
+          <input class="live-volume-slider" id="live-radio-volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Ses seviyesi">
+          <span class="live-volume-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4z"></path>
+              <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M16 8.5c1.6 1.7 1.6 5.3 0 7M19 6c3.2 3.3 3.2 8.7 0 12"></path>
+            </svg>
+          </span>
+        </div>
+        <button class="live-play" id="live-radio-play" type="button" aria-label="Radyoyu oynat">
+          <span class="live-play-icon" id="live-radio-play-icon">&#9654;</span>
+          <span class="live-play-label" id="live-radio-play-label">PLAY</span>
+        </button>
         <span class="caster-left-cap" aria-hidden="true"></span>
         <span class="caster-right-cap" aria-hidden="true"></span>
       </div>
@@ -740,7 +871,7 @@
         <button id="radio-mute" type="button"></button>
         <input id="radio-volume" type="range" min="0" max="1" step="0.01" value="0.8">
         <span class="radio-message" id="radio-message" role="status" aria-live="polite"></span>
-        <audio id="radio-audio" preload="none" autoplay></audio>
+        <audio id="radio-audio" preload="none" src="https://sapircast.caster.fm:17681/BHufv?token=ce180395cb90e787d23af59e7ff7e580"></audio>
       </div>
 
       <footer class="credits">
@@ -760,7 +891,6 @@
     <small id="clock-date"></small>
   </div>
 
-  <script src="https://cdn.cloud.caster.fm/widgets/embed.js"></script>
   <script>
     (() => {
       const clock = document.querySelector("#mouse-clock");
@@ -776,6 +906,11 @@
       const radioMessage = document.querySelector("#radio-message");
       const radioNowPlaying = document.querySelector("#radio-now-playing");
       const radioNowPlayingText = document.querySelector("#radio-now-playing-text");
+      const liveRadioPlay = document.querySelector("#live-radio-play");
+      const liveRadioPlayIcon = document.querySelector("#live-radio-play-icon");
+      const liveRadioPlayLabel = document.querySelector("#live-radio-play-label");
+      const liveRadioMute = document.querySelector("#live-radio-mute");
+      const liveRadioVolume = document.querySelector("#live-radio-volume");
       const frameViewport = document.querySelector(".site-frame-viewport");
       const siteFrame = document.querySelector(".site-frame");
       const mobileLayout = window.matchMedia("(max-width: 800px)");
@@ -884,7 +1019,44 @@
       updateClock();
       window.setInterval(updateClock, 1000);
 
-      radioAudio.volume = Number(radioVolume.value);
+      radioAudio.volume = Number(liveRadioVolume.value);
+      radioVolume.value = liveRadioVolume.value;
+
+      const updateLivePlayer = () => {
+        const isPlaying = !radioAudio.paused;
+        liveRadioPlayIcon.textContent = isPlaying ? "Ⅱ" : "▶";
+        liveRadioPlayLabel.textContent = isPlaying ? "PAUSE" : "PLAY";
+        liveRadioPlay.setAttribute("aria-label", isPlaying ? "Radyoyu duraklat" : "Radyoyu oynat");
+      };
+
+      liveRadioPlay.addEventListener("click", async () => {
+        if (!radioAudio.paused) {
+          radioAudio.pause();
+          return;
+        }
+
+        try {
+          await radioAudio.play();
+          radioMessage.textContent = "Radyo oynatılıyor.";
+        } catch {
+          radioMessage.textContent = "Radyo yayını başlatılamadı.";
+        }
+      });
+
+      liveRadioMute.addEventListener("click", () => {
+        radioAudio.muted = !radioAudio.muted;
+        liveRadioMute.setAttribute("aria-label", radioAudio.muted ? "Sesi aç" : "Sesi kapat");
+        liveRadioMute.title = radioAudio.muted ? "Sesi aç" : "Sesi kapat";
+      });
+
+      liveRadioVolume.addEventListener("input", () => {
+        radioAudio.volume = Number(liveRadioVolume.value);
+        radioVolume.value = liveRadioVolume.value;
+      });
+
+      radioAudio.addEventListener("play", updateLivePlayer);
+      radioAudio.addEventListener("pause", updateLivePlayer);
+      updateLivePlayer();
 
       radioPlay.addEventListener("click", async () => {
         radioStatusLight.classList.remove("is-stopped");
