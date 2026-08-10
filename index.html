@@ -599,34 +599,6 @@
       }
     }
 
-    .mouse-clock {
-      position: fixed;
-      z-index: 10;
-      top: 0;
-      left: 0;
-      display: none;
-      min-width: 78px;
-      padding: 4px 7px;
-      border: 1px solid #330;
-      border-radius: 50%;
-      color: #fff;
-      background: rgba(0, 0, 0, .78);
-      font: 11px Tahoma, Arial, sans-serif;
-      text-align: center;
-      pointer-events: none;
-    }
-
-    .mouse-clock time {
-      color: #ff1f1f;
-      font-weight: 700;
-    }
-
-    .mouse-clock small {
-      display: block;
-      color: #ff0;
-      white-space: nowrap;
-    }
-
     @media (max-width: 800px) {
       body {
         padding: 0;
@@ -644,10 +616,6 @@
         margin: 0;
         transform: scale(var(--mobile-scale, 1));
         transform-origin: top left;
-      }
-
-      .mouse-clock {
-        display: none !important;
       }
 
     }
@@ -753,17 +721,9 @@
     </main>
   </div>
 
-  <div class="mouse-clock" id="mouse-clock" aria-hidden="true">
-    <time id="clock-time"></time>
-    <small id="clock-date"></small>
-  </div>
-
   <script src="https://cdn.cloud.caster.fm/widgets/embed.js"></script>
   <script>
     (() => {
-      const clock = document.querySelector("#mouse-clock");
-      const clockTime = document.querySelector("#clock-time");
-      const clockDate = document.querySelector("#clock-date");
       const counter = document.querySelector("#visitor-count");
       const radioAudio = document.querySelector("#radio-audio");
       const radioPlay = document.querySelector("#radio-play");
@@ -865,23 +825,6 @@
       syncMobileLayout();
       window.addEventListener("resize", syncMobileLayout, { passive: true });
 
-      const updateClock = () => {
-        const now = new Date();
-        clockTime.textContent = new Intl.DateTimeFormat("tr-TR", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit"
-        }).format(now);
-        clockDate.textContent = new Intl.DateTimeFormat("tr-TR", {
-          weekday: "short",
-          day: "numeric",
-          month: "short"
-        }).format(now);
-      };
-
-      updateClock();
-      window.setInterval(updateClock, 1000);
-
       radioAudio.volume = Number(radioVolume.value);
 
       radioPlay.addEventListener("click", async () => {
@@ -920,11 +863,6 @@
       });
 
       if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
-        document.addEventListener("mousemove", (event) => {
-          clock.style.display = "block";
-          clock.style.transform = `translate(${event.clientX + 22}px, ${event.clientY + 18}px)`;
-        }, { passive: true });
-
         for (let index = 0; index < 10; index += 1) {
           const heart = document.createElement("span");
           heart.className = "heart";
