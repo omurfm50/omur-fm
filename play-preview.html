@@ -70,7 +70,7 @@
     .volume {
       position: absolute;
       top: 13px;
-      left: 374px;
+      left: 362px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -82,12 +82,14 @@
       position: relative;
       width: 132px;
       height: 5px;
+      overflow: visible;
       background: #e81e4d;
     }
     .line::after {
       position: absolute;
       top: -7px;
       right: 0;
+      z-index: 2;
       width: 19px;
       height: 19px;
       border-radius: 50%;
