@@ -75,10 +75,10 @@
     .site-inner::after {
       position: absolute;
       z-index: 7;
-      top: 425px;
+      top: var(--chat-side-top, 425px);
       width: 40px;
-      height: 600px;
-      background: url("https://resmim.net/cdn/2026/08/23/E7w8en.gif") no-repeat;
+      height: var(--chat-side-height, 600px);
+      background: url("https://resmim.net/cdn/2026/08/23/E7w8en.gif") top center / 40px 100% no-repeat;
       content: "";
       pointer-events: none;
     }
@@ -1049,6 +1049,8 @@
       const liveRadioVolume = document.querySelector("#live-radio-volume");
       const frameViewport = document.querySelector(".site-frame-viewport");
       const siteFrame = document.querySelector(".site-frame");
+      const siteInner = document.querySelector(".site-inner");
+      const playerPanel = document.querySelector(".player-panel");
       const chatPlayer = document.querySelector(".player");
       const chatFrame = chatPlayer?.querySelector("iframe");
       const mobileLayout = window.matchMedia("(max-width: 800px)");
@@ -1130,12 +1132,16 @@
       const syncMobileLayout = () => {
         if (!mobileLayout.matches) {
           document.documentElement.style.removeProperty("--mobile-scale");
+          siteInner.style.removeProperty("--chat-side-top");
+          siteInner.style.removeProperty("--chat-side-height");
           frameViewport.style.removeProperty("height");
           return;
         }
 
         const scale = Math.min(1, document.documentElement.clientWidth / 760);
         document.documentElement.style.setProperty("--mobile-scale", String(scale));
+        siteInner.style.setProperty("--chat-side-top", `${playerPanel.offsetTop}px`);
+        siteInner.style.setProperty("--chat-side-height", `${playerPanel.offsetHeight}px`);
         frameViewport.style.height = `${siteFrame.offsetHeight * scale}px`;
       };
 
