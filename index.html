@@ -16,6 +16,7 @@
       --yellow: #ffff66;
       --blue: #069;
       --silver: #ddd;
+      --section-gap: 20px;
     }
 
     * {
@@ -62,10 +63,31 @@
     }
 
     .site-inner {
-      padding: 35px 24px 18px;
+      position: relative;
+      padding: 35px 24px var(--section-gap);
       border: 2px solid #111;
       background: var(--black) url("therosestripflutedae7.jpg") repeat-y;
       background-size: 100% auto;
+    }
+
+    .site-inner::before,
+    .site-inner::after {
+      position: absolute;
+      z-index: 7;
+      top: 425px;
+      width: 40px;
+      height: 600px;
+      background: url("https://resmim.net/cdn/2026/08/23/E7w8en.gif") no-repeat;
+      content: "";
+      pointer-events: none;
+    }
+
+    .site-inner::before {
+      left: 14px;
+    }
+
+    .site-inner::after {
+      right: 14px;
     }
 
     .panel {
@@ -124,7 +146,7 @@
 
     .welcome-panel {
       width: min(740px, 100%);
-      margin-top: 46px;
+      margin-top: var(--section-gap);
     }
 
     .welcome {
@@ -143,7 +165,7 @@
     .dj-ticker {
       width: min(940px, 100%);
       height: 34px;
-      margin: 7px auto 0;
+      margin: var(--section-gap) auto 0;
       overflow: hidden;
       border: 2px inset #eee;
       color: var(--yellow);
@@ -172,8 +194,16 @@
     .player-panel {
       position: relative;
       z-index: 6;
-      width: min(940px, 100%);
-      margin-top: 6px;
+      width: 100%;
+      margin-top: var(--section-gap);
+    }
+
+    @media (min-width: 801px) {
+      .player-panel {
+        width: calc(100% - 86px);
+        padding-right: 12px;
+        padding-left: 12px;
+      }
     }
 
     .player-panel .panel-content {
@@ -184,7 +214,7 @@
       display: grid;
       place-items: center;
       width: 100%;
-      height: 554px;
+      height: 669px;
       border: 2px inset #eee;
       background:
         linear-gradient(rgba(0, 0, 0, .18), rgba(0, 0, 0, .18)),
@@ -195,9 +225,39 @@
 
     .player iframe {
       display: block;
-      width: 100%;
-      height: 100%;
+      width: 1080px;
+      max-width: 100%;
+      height: 554px;
       border: 0;
+      transform: scaleY(1.2);
+      transform-origin: center;
+    }
+
+    .radio-controls-row {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(78px, 1fr) 714px minmax(78px, 1fr);
+      align-items: start;
+      width: calc(100% + 72px);
+      min-height: 200px;
+      margin: var(--section-gap) 0 0 -36px;
+    }
+
+    .play-side-gif {
+      display: block;
+      justify-self: center;
+      width: 125px;
+      height: 200px;
+      background: url("https://resmim.net/cdn/2026/08/23/E7woUZ.gif") center / 125px 200px no-repeat;
+      pointer-events: none;
+    }
+
+    .play-side-gif:first-child {
+      transform: translateX(20px);
+    }
+
+    .play-side-gif:last-of-type {
+      transform: translateX(-20px);
     }
 
     .radio-controls {
@@ -208,7 +268,7 @@
       width: 430px;
       max-width: 100%;
       height: 44px;
-      margin: 8px auto 0;
+      margin: var(--section-gap) auto 0;
       padding: 7px 5px;
       overflow: hidden;
       border: 2px solid #151719;
@@ -223,6 +283,18 @@
         linear-gradient(180deg, #777c7f 0%, #292c2e 38%, #090a0b 58%, #34383a 100%);
       color: #d8d8d8;
       font: 11px Tahoma, Arial, sans-serif;
+    }
+
+    .radio-controls-row .radio-controls {
+      margin: 38px 0 0;
+    }
+
+    .radio-controls-row .credits {
+      position: absolute;
+      top: 106px;
+      right: 0;
+      left: 0;
+      margin: 0;
     }
 
     .caster-radio-controls {
@@ -678,7 +750,7 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      margin: 16px auto 18px;
+      margin: var(--section-gap) auto 0;
       color: #f00;
       font-weight: 700;
       font-style: italic;
@@ -784,10 +856,31 @@
         position: absolute;
         top: 2px;
         left: 2px;
-        width: 900px;
+        width: 1080px;
+        max-width: none;
         height: 554px;
-        transform: scale(.6933333333);
+        transform: scale(.5777777778, .6933333333);
         transform-origin: top left;
+      }
+
+      .radio-controls-row {
+        display: block;
+        width: 100%;
+        min-height: 0;
+        margin-left: 0;
+      }
+
+      .radio-controls-row .radio-controls {
+        margin: 0 auto;
+      }
+
+      .play-side-gif {
+        display: none;
+      }
+
+      .radio-controls-row .credits {
+        position: static;
+        margin: var(--section-gap) auto 0;
       }
 
       .mouse-clock {
@@ -843,8 +936,8 @@
             <div class="player">
               <iframe
                 src="https://flatcastx.com/sid/1567"
-                width="900"
-                height="554"
+                width="1080"
+                height="665"
                 frameborder="0"
                 allow="autoplay"
                 title="Ömür FM radyo yayını"
@@ -854,8 +947,10 @@
         </div>
       </section>
 
-      <div class="radio-controls caster-radio-controls" role="group" aria-label="Caster.fm radyo kontrolleri">
-        <img class="live-caster-logo" src="https://cdn.cloud.caster.fm/images/white-logo.svg" alt="Caster.fm">
+      <div class="radio-controls-row">
+        <span class="play-side-gif" aria-hidden="true"></span>
+        <div class="radio-controls caster-radio-controls" role="group" aria-label="Caster.fm radyo kontrolleri">
+          <img class="live-caster-logo" src="https://cdn.cloud.caster.fm/images/white-logo.svg" alt="Caster.fm">
         <span class="radio-name" id="radio-now-playing" role="status" aria-live="polite" aria-label="Şu an çalan">
           <span class="radio-name-track" id="radio-now-playing-text">&#9835; &Ouml;M&Uuml;R FM &#9835;</span>
         </span>
@@ -877,8 +972,17 @@
           <span class="live-play-icon" id="live-radio-play-icon">&#9654;</span>
           <span class="live-play-label" id="live-radio-play-label">PLAY</span>
         </button>
-        <span class="caster-left-cap" aria-hidden="true"></span>
-        <span class="caster-right-cap" aria-hidden="true"></span>
+          <span class="caster-left-cap" aria-hidden="true"></span>
+          <span class="caster-right-cap" aria-hidden="true"></span>
+        </div>
+        <span class="play-side-gif" aria-hidden="true"></span>
+        <footer class="credits">
+          <span>Web Tasarım :</span>
+          <span class="designer">SeLoCaN</span>
+          <span class="year">2026 ©</span>
+          <span class="counter-label">Ziyaretçi Sayısı :</span>
+          <output class="counter" id="visitor-count">000001</output>
+        </footer>
       </div>
 
       <div hidden aria-hidden="true">
@@ -890,14 +994,6 @@
         <span class="radio-message" id="radio-message" role="status" aria-live="polite"></span>
         <audio id="radio-audio" preload="none" src="https://sapircast.caster.fm:17681/BHufv?token=ce180395cb90e787d23af59e7ff7e580"></audio>
       </div>
-
-      <footer class="credits">
-        <span>Web Tasarım :</span>
-        <span class="designer">SeLoCaN</span>
-        <span class="year">2026 ©</span>
-        <span class="counter-label">Ziyaretçi Sayısı :</span>
-        <output class="counter" id="visitor-count">000001</output>
-      </footer>
 
       </div>
     </main>
