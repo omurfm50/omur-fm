@@ -1140,8 +1140,9 @@
 
         const scale = Math.min(1, document.documentElement.clientWidth / 760);
         document.documentElement.style.setProperty("--mobile-scale", String(scale));
-        siteInner.style.setProperty("--chat-side-top", `${playerPanel.offsetTop}px`);
-        siteInner.style.setProperty("--chat-side-height", `${playerPanel.offsetHeight}px`);
+        const chatTop = playerPanel.offsetTop + chatPlayer.offsetTop;
+        siteInner.style.setProperty("--chat-side-top", `${chatTop}px`);
+        siteInner.style.setProperty("--chat-side-height", `${chatPlayer.offsetHeight}px`);
         frameViewport.style.height = `${siteFrame.offsetHeight * scale}px`;
       };
 
