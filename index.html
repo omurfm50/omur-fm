@@ -226,11 +226,11 @@
 
     .player iframe {
       display: block;
-      width: 106.3829787%;
+      width: 1080px;
       max-width: none;
       height: 554px;
       border: 0;
-      transform: scaleX(.94);
+      transform: scaleX(var(--chat-scale-x, .94));
       transform-origin: center;
     }
 
@@ -1028,6 +1028,8 @@
       const liveRadioVolume = document.querySelector("#live-radio-volume");
       const frameViewport = document.querySelector(".site-frame-viewport");
       const siteFrame = document.querySelector(".site-frame");
+      const chatPlayer = document.querySelector(".player");
+      const chatFrame = chatPlayer?.querySelector("iframe");
       const mobileLayout = window.matchMedia("(max-width: 800px)");
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -1116,6 +1118,15 @@
 
       syncMobileLayout();
       window.addEventListener("resize", syncMobileLayout, { passive: true });
+
+      const syncChatFrame = () => {
+        if (!chatPlayer || !chatFrame || mobileLayout.matches) return;
+        const scaleX = Math.min(1, chatPlayer.clientWidth / 1080);
+        chatFrame.style.setProperty("--chat-scale-x", String(scaleX));
+      };
+
+      syncChatFrame();
+      new ResizeObserver(syncChatFrame).observe(chatPlayer);
 
       const updateClock = () => {
         const now = new Date();
