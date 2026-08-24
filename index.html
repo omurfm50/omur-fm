@@ -110,6 +110,22 @@
       background: var(--black) url("borda7eh7.jpg") repeat;
     }
 
+    .header-showcase {
+      display: grid;
+      grid-template-columns: minmax(125px, 1fr) minmax(0, 740px) minmax(125px, 1fr);
+      align-items: center;
+      width: 100%;
+    }
+
+    .header-center {
+      min-width: 0;
+    }
+
+    .header-showcase .nav-panel,
+    .header-showcase .welcome-panel {
+      width: 100%;
+    }
+
     .nav-panel {
       width: min(740px, 100%);
       padding-top: 12px;
@@ -236,12 +252,8 @@
 
     .radio-controls-row {
       position: relative;
-      display: grid;
-      grid-template-columns: minmax(78px, 1fr) 714px minmax(78px, 1fr);
-      align-items: start;
-      width: calc(100% + 72px);
-      min-height: 200px;
-      margin: var(--section-gap) 0 0 -36px;
+      width: 100%;
+      margin: var(--section-gap) auto 0;
     }
 
     .play-side-gif {
@@ -259,6 +271,10 @@
 
     .play-side-gif:last-of-type {
       transform: translateX(-20px);
+    }
+
+    .header-showcase .play-side-gif {
+      transform: none;
     }
 
     .radio-controls {
@@ -287,15 +303,11 @@
     }
 
     .radio-controls-row .radio-controls {
-      margin: 38px 0 0;
+      margin: 0 auto;
     }
 
     .radio-controls-row .credits {
-      position: absolute;
-      top: 106px;
-      right: 0;
-      left: 0;
-      margin: 0;
+      margin: var(--section-gap) auto 0;
     }
 
     .caster-radio-controls {
@@ -871,6 +883,10 @@
         margin-left: 0;
       }
 
+      .header-showcase {
+        display: block;
+      }
+
       .radio-controls-row .radio-controls {
         margin: 0 auto;
       }
@@ -911,6 +927,9 @@
   <div class="site-frame-viewport">
     <main class="site-frame">
       <div class="site-inner">
+      <div class="header-showcase">
+        <span class="play-side-gif" aria-hidden="true"></span>
+        <div class="header-center">
       <section class="panel nav-panel" aria-label="Ömür FM logosu">
         <div class="panel-inner">
           <div class="panel-content">
@@ -926,6 +945,9 @@
           </div>
         </div>
       </section>
+        </div>
+        <span class="play-side-gif" aria-hidden="true"></span>
+      </div>
 
       <div class="dj-ticker" role="marquee" aria-label="Yayındaki DJ">
         <span class="dj-ticker-text">YAYINDA: DJ ......</span>
@@ -950,7 +972,6 @@
       </section>
 
       <div class="radio-controls-row">
-        <span class="play-side-gif" aria-hidden="true"></span>
         <div class="radio-controls caster-radio-controls" role="group" aria-label="Caster.fm radyo kontrolleri">
           <img class="live-caster-logo" src="https://cdn.cloud.caster.fm/images/white-logo.svg" alt="Caster.fm">
         <span class="radio-name" id="radio-now-playing" role="status" aria-live="polite" aria-label="Şu an çalan">
@@ -977,7 +998,6 @@
           <span class="caster-left-cap" aria-hidden="true"></span>
           <span class="caster-right-cap" aria-hidden="true"></span>
         </div>
-        <span class="play-side-gif" aria-hidden="true"></span>
         <footer class="credits">
           <span>Web Tasarım :</span>
           <span class="designer">SeLoCaN</span>
