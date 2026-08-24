@@ -1054,6 +1054,8 @@
       const mobileLayout = window.matchMedia("(max-width: 800px)");
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+      document.addEventListener("contextmenu", (event) => event.preventDefault());
+
       const cleanMetadata = (value) => String(value || "").replace(/\s+/g, " ").trim();
 
       const setNowPlaying = (artist, title) => {
